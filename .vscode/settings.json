@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "goop_repo",
+            "database": "goop_repo",
+            "username": "postgres",
+            "password": "password"
+        }
+    ]
+}
