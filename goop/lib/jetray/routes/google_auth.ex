@@ -81,7 +81,7 @@ defmodule Jetray.Routes.GoogleAuth do
                 |> put_resp_content_type("application/json")
                 |> Jetray.Plugs.Redirect.redirect(
                   base_url <>
-                    "/?access_token=" <>
+                    "/login/?access_token=" <>
                     Goop.AccessToken.generate_and_sign!(%{"user_id" => db_user.id}) <>
                     "&refresh_token=" <>
                     Goop.RefreshToken.generate_and_sign!(%{

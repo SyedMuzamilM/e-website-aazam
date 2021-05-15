@@ -12,7 +12,7 @@ defmodule Jetray do
   end
 
   forward("/hello", to: Jetray.Routes.Home)
-  forward("/api/v1", to: Jetray.Routes.ApiRoute)
+  forward("/api/v1", to: Jetray.Routes.ProductsApi)
   forward("/auth/google", to: Jetray.Routes.GoogleAuth)
 
   get _ do

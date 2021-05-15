@@ -33,7 +33,9 @@ defmodule Goop.MixProject do
       # HTTP Client
       {:httpoison, "~> 1.8"},
       # JWT
-      {:joken, "~> 2.3.0"}
+      {:joken, "~> 2.3.0"},
+      # local registry management
+      {:gen_registry, "~> 1.0"}
     ]
   end
 end
