@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 
 export const showErrorToast = (message: string | null) => {
   return (

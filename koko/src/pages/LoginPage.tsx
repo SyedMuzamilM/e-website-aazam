@@ -51,7 +51,7 @@ export const LoginPage = () => {
     } else if (hasTokens) {
       history.push("/")
     }
-  }, [hasTokens, history]);
+  }, [hasTokens, history, getLocalItems.role]);
   return (
     <BrowserRouter>
       <div className={`flex justify-center lg:my-24 my-12`}>

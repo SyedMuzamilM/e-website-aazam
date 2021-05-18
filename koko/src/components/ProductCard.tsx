@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { Product } from "../lib/types";
-
 
 export const ProductCard = ({product}: any) => {
     return (
