@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
     } else {
       isLoggedIn = false
     }
-  }, [useTokenStore])
+  })
 
   return (
     <BrowserRouter>

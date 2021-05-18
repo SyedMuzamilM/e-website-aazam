@@ -17,7 +17,7 @@ export const ProductPage: React.FC = () => {
     };
 
     fethProduct();
-  }, []);
+  }, [query])
   return (
     <div className={`flex sm:flex-row flex-col justify-center content-center my-5 mx-4`}>
       {product !== undefined ? (
