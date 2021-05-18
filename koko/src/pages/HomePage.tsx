@@ -25,7 +25,7 @@ export const HomePage: React.FC<AppProps> = (props) => {
           Products
         </h1>
         <div
-          className={`flex flex-col lg:justify-start justify-center lg:w-9/12 sm:flex-row sm:w-11/12`}
+          className={`flex flex-wrap justify-center lg:w-9/12 sm:w-9/12`}
         >
             {products.map((p: Product) => {
               return (

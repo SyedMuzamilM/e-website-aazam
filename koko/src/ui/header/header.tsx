@@ -1,9 +1,10 @@
-import { Link, BrowserRouter as Router } from "react-router-dom";
+import { Link, BrowserRouter } from "react-router-dom";
 import { isLoggedIn } from "../../lib/isAuth";
 
 export const Header: React.FC = () => {
   return (
-    <Router>
+    <BrowserRouter>
+    
       <header className={`bg-green-600 flex flex-row justify-between py-4`}>
         <nav className={`flex mx-auto items-center justify-between lg:w-8/12 `}>
           <div className={`text-white font-extrabold text-2xl`}>
@@ -34,6 +35,6 @@ export const Header: React.FC = () => {
           </ul>
         </nav>
       </header>
-    </Router>
+    </BrowserRouter>
   );
 };
