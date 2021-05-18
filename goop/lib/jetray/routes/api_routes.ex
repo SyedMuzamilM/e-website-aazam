@@ -7,6 +7,12 @@ defmodule Jetray.Routes.ApiRoute do
 
   plug(Jetray.Plugs.Cors)
   plug(:match)
+
+  plug(Plug.Parsers,
+    parsers: [:urlencoded, :json],
+    json_decoder: Jason
+  )
+
   plug(:dispatch)
 
   get "user/:id" do
@@ -58,5 +64,33 @@ defmodule Jetray.Routes.ApiRoute do
         |> put_resp_content_type("application/json")
         |> send_resp(200, Jason.encode!(%{roles: roles}))
     end
+  end
+
+  post "/post-some-data" do
+    response = conn.body_params
+    response |> handle_response(conn)
+  end
+
+  defp handle_response(response, conn) do
+    IO.inspect(response)
+
+    # %{code: code, message: message} =
+    #   case response do
+    #     {:ok, message} -> %{code: 200, message: message}
+    #     {:not_fount, message} -> %{code: 404, message: message}
+    #     {:malformed_data, message} -> %{code: 400, message: message}
+    #     {:server_error, message} -> %{code: 500, message: message}
+    #   end
+
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Jason.encode!(%{message: "Got the data"}))
+  end
+
+  post "/some-more-data-to-post" do
+    # IO.inspect(conn.body_params)
+    data = conn.body_params
+
+    send_resp(conn, 200, "Success! #{data["name"]}")
   end
 end

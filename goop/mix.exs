@@ -34,6 +34,7 @@ defmodule Goop.MixProject do
       {:httpoison, "~> 1.8"},
       # JWT
       {:joken, "~> 2.3.0"},
+      {:poison, "~> 4.0"},
       # local registry management
       {:gen_registry, "~> 1.0"}
     ]

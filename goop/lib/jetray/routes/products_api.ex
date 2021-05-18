@@ -6,13 +6,17 @@ defmodule Jetray.Routes.ProductsApi do
 
   plug(Jetray.Plugs.Cors)
   plug(:match)
-  plug(:dispatch)
 
-  plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
+  plug(Plug.Parsers,
+    parsers: [:urlencoded, :json],
+    json_decoder: Jason
+  )
+
+  plug(:dispatch)
 
   alias Rath.Products
 
-  get "/products" do
+  get "/" do
     all_products = Products.get_all()
 
     conn
@@ -20,7 +24,7 @@ defmodule Jetray.Routes.ProductsApi do
     |> send_resp(200, Jason.encode!(%{data: all_products}))
   end
 
-  get "/products/:id" do
+  get "/:id" do
     %Plug.Conn{params: %{"id" => id}} = conn
 
     case UUID.cast(id) do
@@ -46,49 +50,39 @@ defmodule Jetray.Routes.ProductsApi do
     end
   end
 
-  post "/products" do
-    # {:ok, body, _conn} = read_body(conn)
-    # IO.inspect(body, label: "The data from the client")
-    # send_resp(conn, 200, "Got the data: #{body}")
+  post "/" do
+    data = conn.body_params
+    IO.inspect(conn.body_params)
 
-    # {status, body} =
-    #   case conn.body_params do
-    #     %{"events" => events} ->
-    #       {200, process_events(events)}
+    if not is_nil(data) do
+      try do
+        new_product =
+          case Rath.Mutations.Products.create_product(data) do
+            {:create, product} ->
+              product
+          end
 
-    #     _ ->
-    #       {422, missing_events()}
-    #   end
-
-    # Access.fetch(conn.body_params, {status, body})
-    {status, body} =
-      case conn.body_params do
-        %{data: data} ->
-          {200, "Got the data and data is #{data}"}
-
-        _ ->
-          {422, "Missing data "}
+        if new_product do
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(
+            200,
+            Jason.encode!(%{message: "Created the product ID: #{new_product.id}"})
+          )
+        else
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(200, Jason.encode!(%{message: "error creating product"}))
+        end
+      rescue
+        e in RuntimeError ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> send_resp(400, Jason.encode!(%{message: e.message}))
       end
-
-    send_resp(conn, status, body)
+    end
   end
 
-  # defp process_events(events) when is_list(events) do
-  #   # Do some processing on a list of events
-  #   Jason.encode!(%{response: "Received Events!"})
-  # end
-
-  # defp process_events(_) do
-  #   # If we can't process anything, let them know :)
-  #   Jason.encode!(%{response: "Please Send Some Events!"})
-  # end
-
-  # defp missing_events do
-  #   Jason.encode!(%{error: "Expected Payload: { 'events': [...] }"})
-  # end
-
-  # A catchall route, 'match' will match no matter the request method,
-  # so a response is always returned, even if there is no route to match.
   match _ do
     send_resp(conn, 404, "oops... Nothing here :(")
   end
