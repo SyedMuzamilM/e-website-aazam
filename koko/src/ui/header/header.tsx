@@ -1,7 +1,18 @@
+import { useEffect } from "react";
 import { Link, BrowserRouter } from "react-router-dom";
-import { isLoggedIn } from "../../lib/isAuth";
+import { useTokenStore } from "../../auth/useTokenStore";
 
+let isLoggedIn: boolean;
 export const Header: React.FC = () => {
+  useEffect(() => {
+    const state = useTokenStore.getState()
+    if (state.access_token !== "" && state.refresh_token !== "") {
+      isLoggedIn = true;
+    } else {
+      isLoggedIn = false
+    }
+  }, [useTokenStore])
+
   return (
     <BrowserRouter>
     
